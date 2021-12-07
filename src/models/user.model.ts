@@ -4,7 +4,15 @@ import bcrypt from "bcrypt";
 
 import config from "config";
 import { string } from "zod";
-import { UserDocument } from "../interfaces/interfaces";
+
+export interface UserDocument extends mongoose.Document {
+  email: string;
+  name: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+  comparePassword(candidatePassword: string): Promise<Boolean>;
+}
 
 const userSchema = new mongoose.Schema(
   {
