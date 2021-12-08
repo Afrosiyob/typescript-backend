@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
   let user = this as UserDocument;
-  if (user.isDirectModified("password")) {
+  if (!user.isDirectModified("password")) {
     return next();
   }
   const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
-  const hash = bcrypt.hashSync(user.password, salt);
+  const hash = await bcrypt.hashSync(user.password, salt);
   user.password = hash;
   return next();
 });
@@ -43,6 +43,6 @@ userSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<UserDocument>("User", userSchema);
 
 export default User;
