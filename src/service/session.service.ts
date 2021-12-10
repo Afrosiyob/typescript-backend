@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 import Session, { SessionDocument } from "../models/session.model";
 
 export const createSession = async (
@@ -9,5 +9,10 @@ export const createSession = async (
   return session.toJSON();
 };
 
-export const findSession = async (query: FilterQuery<SessionDocument>) =>
+export const findSession = (query: FilterQuery<SessionDocument>) =>
   Session.find(query).lean();
+
+export const updateSession = async (
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) => Session.updateOne(query, update);

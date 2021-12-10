@@ -21,4 +21,5 @@ export default {
   +0fk592vlHggCWYQ6QJANZzno1FwUOjtGLeKm83ZGdbo3K+00i25FmBgB2d0uAtk
   noxFVOjsY+eSXHZqNybrhWRAzutSnpz/QEf/7Vg97g==
   -----END CERTIFICATE-----`,
+  tokenKey: "leo 1997",
 };

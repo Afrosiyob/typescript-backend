@@ -2,16 +2,13 @@ import jwt from "jsonwebtoken";
 
 import config from "config";
 
-const privateKey = config.get<string>("privateKey");
-const publicKey = config.get<string>("publicKey");
-
 export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
-  return jwt.sign(object, privateKey, options);
+  return jwt.sign(object, config.get<string>("tokenKey"), options);
 }
 
 export function verifyJwt(token: string) {
   try {
-    const decoded = jwt.verify(token, publicKey);
+    const decoded = jwt.verify(token, config.get<string>("tokenKey"));
     return {
       valid: true,
       expired: false,
