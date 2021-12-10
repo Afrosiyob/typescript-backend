@@ -28,6 +28,8 @@ export const deserializeUser = (
     ""
   );
 
+  const refreshToken = get(req, "headers.x-refresh");
+
   if (!accessToken) {
     return next();
   }
@@ -37,6 +39,9 @@ export const deserializeUser = (
   if (decoded) {
     res.locals.user = decoded;
     return next();
+  }
+
+  if (expired && refreshToken) {
   }
 
   return next();
