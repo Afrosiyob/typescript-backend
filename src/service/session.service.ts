@@ -1,8 +1,10 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
 import Session, { SessionDocument } from "../models/session.model";
-import { verifyJwt } from "../utils/jwt.utils";
+import { signJwt, verifyJwt } from "../utils/jwt.utils";
 import { get } from "lodash";
 import { findUser } from "./user.service";
+import config from "config";
+
 export const createSession = async (
   userId: string | any,
   userAgent: string
@@ -26,13 +28,21 @@ export const reIssueAccessToken = async ({
 }) => {
   const { decoded } = verifyJwt(refreshToken);
 
-  if (!decoded || !get(decoded, "id")) return false;
+  if (!decoded || !get(decoded, "session")) return false;
 
-  const session = await Session.findById(get(decoded, "_id"));
+  const session = await Session.findById(get(decoded, "session"));
 
   if (!session || !session.valid) return false;
 
   const user = await findUser({ _id: session.user });
 
   if (!user) return false;
+
+  // create access-token
+  const accessToken = signJwt(
+    { ...user, session: session._id },
+    { expiresIn: config.get<string>("accessTokenTtl") } // 15 minutes for accessToken
+  );
+
+  return accessToken;
 };

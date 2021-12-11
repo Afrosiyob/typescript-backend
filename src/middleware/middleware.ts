@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { get } from "lodash";
 import { AnyZodObject } from "zod";
+import { reIssueAccessToken } from "../service/session.service";
 import { verifyJwt } from "../utils/jwt.utils";
 
 export const validate =
@@ -18,7 +19,7 @@ export const validate =
     }
   };
 
-export const deserializeUser = (
+export const deserializeUser = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -42,6 +43,15 @@ export const deserializeUser = (
   }
 
   if (expired && refreshToken) {
+    const newAccessToken: any = await reIssueAccessToken({ refreshToken });
+    if (newAccessToken) {
+      res.setHeader("x-access-token", newAccessToken);
+    }
+
+    const result = verifyJwt(newAccessToken);
+
+    res.locals.user = result.decoded;
+    return next();
   }
 
   return next();
