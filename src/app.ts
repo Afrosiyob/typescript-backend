@@ -5,13 +5,6 @@ import logger from "./utils/logger";
 import routes from "./routes/routes";
 import { deserializeUser } from "./middleware/middleware";
 
-import { omit, pick } from "lodash";
-
-var object = { a: 1, b: "2", c: 3, d: 7 };
-
-console.log(pick(object, ["a", "c"]));
-console.log(omit(object, ["a", "c"]));
-
 const app = express();
 const PORT = config.get<number>("port") || 5000;
 
