@@ -42,7 +42,7 @@ export const getProductSchema = object({
   ...params,
 });
 
-export type createProductInput = TypeOf<typeof createProductSchema>;
-export type deleteProductSchema = TypeOf<typeof deleteProductSchema>;
-export type updateProductSchema = TypeOf<typeof updateProductSchema>;
-export type getProductSchema = TypeOf<typeof getProductSchema>;
+export type CreateProductInput = TypeOf<typeof createProductSchema>;
+export type GetProductInput = TypeOf<typeof getProductSchema>;
+export type UpdateProductInput = TypeOf<typeof updateProductSchema>;
+export type DeleteProductInput = TypeOf<typeof deleteProductSchema>;
