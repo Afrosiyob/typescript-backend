@@ -1,5 +1,7 @@
+import { updateProductHandler } from "../controller/product.controller";
+import { updateProductSchema } from "../schema/product.schema";
 import { Express, Request, Response } from "express";
-import { createUserSchema } from "./../schema/user.schema";
+import { createUserSchema } from "../schema/user.schema";
 import { createUserHandler } from "../controller/user.controller";
 import { requireUser, validate } from "../middleware/middleware";
 import {
@@ -8,8 +10,15 @@ import {
   getUserSessionsHandler,
 } from "../controller/session.controller";
 import { createSessionSchema } from "../schema/session.schema";
-import { createProductSchema } from "../schema/product.schema";
-import { createProductHandler } from "../controller/product.controller";
+import {
+  createProductSchema,
+  getProductSchema,
+  deleteProductSchema,
+} from "../schema/product.schema";
+import {
+  createProductHandler,
+  getProductHandler,
+} from "../controller/product.controller";
 
 const routes = (app: Express) => {
   app.get("/check", (req: Request, res: Response) => {
@@ -28,9 +37,27 @@ const routes = (app: Express) => {
   app.delete("/api/sessions", requireUser, deleteSessionHandler);
 
   app.post(
-    "/api/posts",
+    "/api/products",
     [requireUser, validate(createProductSchema)],
     createProductHandler
+  );
+
+  app.put(
+    "/api/products/:productId",
+    [requireUser, validate(updateProductSchema)],
+    updateProductHandler
+  );
+
+  app.get(
+    "/api/products/:productId",
+    validate(getProductSchema),
+    getProductHandler
+  );
+
+  app.delete(
+    "/api/products/:productId",
+    [requireUser, validate(deleteProductSchema)],
+    getProductHandler
   );
 };
 

@@ -4,11 +4,11 @@ import {
   findAndUpdateProduct,
   findProduct,
   getAllProduct,
-} from "./../service/product.service";
+} from "../service/product.service";
 import {
   UpdateProductInput,
   CreateProductInput,
-} from "./../schema/product.schema";
+} from "../schema/product.schema";
 
 import { Request, Response } from "express";
 
@@ -36,7 +36,7 @@ export const updateProductHandler = async (
 
   if (!product) return res.sendStatus(404);
 
-  if (product.user !== userId) return res.sendStatus(403);
+  if (String(product.user) !== userId) return res.sendStatus(403);
 
   const updatedProduct = await findAndUpdateProduct({ productId }, update, {
     new: true,
@@ -75,7 +75,7 @@ export const deleteProductHandler = async (
 
   if (!product) return res.sendStatus(404);
 
-  if (product.user !== userId) return res.sendStatus(403);
+  if (String(product.user) !== userId) return res.sendStatus(403);
 
   await deleteProduct({ productId });
 
