@@ -21,9 +21,25 @@ import {
 } from "../controller/product.controller";
 
 const routes = (app: Express) => {
+  /**
+   * @openapi
+   * /check:
+   *  get:
+   *     tags:
+   *     - Check
+   *     description: Responds if the app is up and running
+   *     responses:
+   *       200:
+   *         description: App is up and running
+   *  post:
+   *     tags:
+   *     - Check
+   */
+
   app.get("/check", (req: Request, res: Response) => {
     res.sendStatus(200);
   });
+
   app.post("/api/user", validate(createUserSchema), createUserHandler);
 
   app.post(
