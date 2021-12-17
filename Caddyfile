@@ -1,0 +1,5 @@
+afrosiyob.github.io/typescript-backend/ {
+    reverse_proxy rest-api:5000 {
+        header_down Strict-Transport-Secuirty max-age=32536000;
+    }
+}
